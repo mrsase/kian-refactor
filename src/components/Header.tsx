@@ -6,7 +6,6 @@ const navLinks = [
   { label: 'Home', href: '#home' },
   { label: 'Solutions', href: '#solutions' },
   { label: 'Markets', href: '#markets' },
-  { label: 'Sustainability', href: '#sustainability' },
   { label: 'Company', href: '#company' },
   { label: 'Contact', href: '#contact' },
 ]
@@ -23,11 +22,11 @@ export function Header() {
     >
       <div className="navbar-start">
         <a href="#home" className="flex items-center gap-2 group">
-          <div className="w-10 h-10 rounded-xl bg-linear-to-br from-green-500 to-blue-500 flex items-center justify-center shadow-md">
+          <div className="w-10 h-10 rounded-xl bg-emerald-500 flex items-center justify-center shadow-md">
             <span className="text-white font-bold text-lg">KG</span>
           </div>
           <span className="text-xl font-bold text-gray-900">
-            Kian<span className="text-green-600">GreenUp</span>
+            Kian<span className="text-emerald-500">GreenUp</span>
           </span>
         </a>
       </div>
@@ -38,26 +37,17 @@ export function Header() {
             <li key={link.label}>
               <a
                 href={link.href}
-                className="rounded-lg font-medium text-gray-700 hover:bg-green-50 hover:text-green-600 transition-colors relative group"
+                className="rounded-lg font-medium text-gray-700 hover:bg-emerald-50 hover:text-emerald-600 transition-colors relative group"
               >
                 {link.label}
-                <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-green-600 group-hover:w-3/4 transition-all duration-300" />
+                <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-emerald-500 group-hover:w-3/4 transition-all duration-300" />
               </a>
             </li>
           ))}
         </ul>
       </div>
 
-      <div className="navbar-end gap-2">
-        <motion.a
-          href="#contact"
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          className="btn bg-linear-to-r from-green-600 to-blue-600 text-white border-none btn-sm lg:btn-md rounded-full px-6 shadow-lg hover:shadow-xl transition-shadow hidden sm:inline-flex"
-        >
-          Get Started
-        </motion.a>
-
+      <div className="navbar-end">
         <button
           className="btn btn-ghost btn-circle lg:hidden"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -79,22 +69,13 @@ export function Header() {
               <li key={link.label}>
                 <a
                   href={link.href}
-                  className="rounded-lg font-medium text-gray-700 hover:bg-green-50 hover:text-green-600"
+                  className="rounded-lg font-medium text-gray-700 hover:bg-emerald-50 hover:text-emerald-600"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {link.label}
                 </a>
               </li>
             ))}
-            <li className="mt-2">
-              <a
-                href="#contact"
-                className="btn bg-linear-to-r from-green-600 to-blue-600 text-white border-none rounded-full"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Get Started
-              </a>
-            </li>
           </ul>
         </motion.div>
       )}

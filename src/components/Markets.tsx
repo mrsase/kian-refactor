@@ -6,49 +6,49 @@ const markets = [
     name: 'Automotive',
     description: 'High-performance materials for the automotive industry',
     icon: Car,
-    color: 'text-blue-600',
-    bgColor: 'bg-blue-50',
+    color: 'text-emerald-600',
+    bgColor: 'bg-emerald-50',
   },
   {
     name: 'Electronics',
     description: 'Reliable materials for electronic applications',
     icon: Cpu,
-    color: 'text-purple-600',
-    bgColor: 'bg-purple-50',
+    color: 'text-teal-600',
+    bgColor: 'bg-teal-50',
   },
   {
     name: 'Industrial',
     description: 'Robust solutions for industrial applications',
     icon: Factory,
-    color: 'text-orange-600',
-    bgColor: 'bg-orange-50',
+    color: 'text-cyan-600',
+    bgColor: 'bg-cyan-50',
   },
   {
     name: 'Consumer Goods',
     description: 'Safe, reliable materials for consumer products',
     icon: ShoppingBag,
-    color: 'text-pink-600',
-    bgColor: 'bg-pink-50',
+    color: 'text-slate-600',
+    bgColor: 'bg-slate-50',
   },
   {
     name: 'Construction',
     description: 'Durable materials for building applications',
     icon: Building,
-    color: 'text-amber-600',
-    bgColor: 'bg-amber-50',
+    color: 'text-emerald-600',
+    bgColor: 'bg-emerald-50',
   },
   {
     name: 'Packaging',
     description: 'Sustainable packaging solutions',
     icon: Package,
-    color: 'text-green-600',
-    bgColor: 'bg-green-50',
+    color: 'text-teal-600',
+    bgColor: 'bg-teal-50',
   },
 ]
 
 export function Markets() {
   return (
-    <section id="markets" className="py-20 bg-linear-to-br from-gray-50 to-blue-50">
+    <section id="markets" className="py-20 bg-slate-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
           {/* Section Header */}
@@ -98,7 +98,7 @@ export function Markets() {
 
                     {/* CTA */}
                     <div className="mt-4 pt-4 border-t border-gray-100">
-                      <span className="inline-flex items-center gap-2 text-green-600 font-medium text-sm group-hover:gap-3 transition-all">
+                      <span className="inline-flex items-center gap-2 text-emerald-600 font-medium text-sm group-hover:gap-3 transition-all">
                         View Details
                         <ArrowRight className="w-4 h-4" />
                       </span>

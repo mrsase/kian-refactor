@@ -1,14 +1,13 @@
 import { createFileRoute } from '@tanstack/react-router'
 import {
-  CTABand,
+  Contact,
   Footer,
   Header,
   Hero,
   Markets,
   Materials,
+  Partners,
   Process,
-  SustainabilityBand,
-  Testimonials,
   Timeline,
 } from '../components'
 
@@ -23,10 +22,9 @@ function App() {
         <Process />
         <Markets />
         <Materials />
-        <SustainabilityBand />
         <Timeline />
-        <Testimonials />
-        <CTABand />
+        <Partners />
+        <Contact />
       </main>
       <Footer />
     </div>
