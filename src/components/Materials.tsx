@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { ArrowRight, Beaker } from 'lucide-react'
+import { Beaker } from 'lucide-react'
 
 const materials = [
   {
@@ -111,13 +111,6 @@ export function Materials() {
                       </div>
                     </div>
 
-                    {/* CTA */}
-                    <div className="mt-6 pt-4 border-t border-gray-100">
-                      <button className="btn btn-ghost btn-sm text-emerald-600 hover:bg-emerald-50 gap-2 group-hover:gap-3 transition-all p-0">
-                        View Details
-                        <ArrowRight className="w-4 h-4" />
-                      </button>
-                    </div>
                   </div>
                 </motion.div>
               </motion.div>

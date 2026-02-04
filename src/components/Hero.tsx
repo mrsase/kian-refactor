@@ -1,10 +1,10 @@
 import { motion } from 'framer-motion'
-import { ArrowDown, ChevronRight, Leaf, Recycle, Sparkles } from 'lucide-react'
+import { ArrowDown, ChevronRight, Sparkles } from 'lucide-react'
 
-const stats = [
-  { value: '30-50%', label: 'Recycled Content' },
-  { value: '5000+', label: 'Tons Upcycled Yearly' },
-  { value: '40%', label: 'Energy Savings' },
+const heroImages = [
+  { id: 1, alt: 'Sustainable materials production', placeholder: '/images/hero-1.jpg' },
+  { id: 2, alt: 'Recycling process', placeholder: '/images/hero-2.jpg' },
+  { id: 3, alt: 'Engineering thermoplastics', placeholder: '/images/hero-3.jpg' },
 ]
 
 export function Hero() {
@@ -107,65 +107,89 @@ export function Hero() {
                   <ChevronRight className="w-5 h-5" />
                 </motion.a>
                 <motion.a
-                  href="#solutions"
+                  href="#process"
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.98 }}
                   className="btn btn-lg bg-white/5 hover:bg-white/10 text-white border border-white/10 hover:border-white/20 rounded-xl px-8 gap-2 backdrop-blur-sm"
                 >
-                  <Recycle className="w-5 h-5" />
-                  Explore Solutions
+                  Learn More
                 </motion.a>
               </motion.div>
             </div>
 
-            {/* Right column - Stats & Visual */}
+            {/* Right column - Image Gallery */}
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
               className="hidden lg:block"
             >
-              <div className="relative">
-                {/* Stats cards */}
-                <div className="grid gap-4">
-                  {stats.map((stat, index) => (
-                    <motion.div
-                      key={stat.label}
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
-                      className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors"
-                    >
-                      <div className="flex items-center gap-4">
-                        <div className="w-14 h-14 rounded-xl bg-emerald-500/20 flex items-center justify-center">
-                          <Leaf className="w-7 h-7 text-emerald-400" />
-                        </div>
-                        <div>
-                          <div className="text-3xl font-bold text-white">{stat.value}</div>
-                          <div className="text-sm text-slate-400">{stat.label}</div>
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
+              <div className="grid grid-cols-2 gap-4">
+                {/* Large image */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.5 }}
+                  className="col-span-2 aspect-video bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden hover:border-emerald-500/30 transition-colors"
+                >
+                  <img
+                    src={heroImages[0].placeholder}
+                    alt={heroImages[0].alt}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none'
+                      e.currentTarget.parentElement!.classList.add('flex', 'items-center', 'justify-center')
+                      e.currentTarget.parentElement!.innerHTML = '<span class="text-slate-500 text-sm">Image Placeholder</span>'
+                    }}
+                  />
+                </motion.div>
+                {/* Two smaller images */}
+                {heroImages.slice(1).map((image, index) => (
+                  <motion.div
+                    key={image.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.6 + index * 0.1 }}
+                    className="aspect-square bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden hover:border-emerald-500/30 transition-colors"
+                  >
+                    <img
+                      src={image.placeholder}
+                      alt={image.alt}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none'
+                        e.currentTarget.parentElement!.classList.add('flex', 'items-center', 'justify-center')
+                        e.currentTarget.parentElement!.innerHTML = '<span class="text-slate-500 text-sm">Image Placeholder</span>'
+                      }}
+                    />
+                  </motion.div>
+                ))}
               </div>
             </motion.div>
           </div>
 
-          {/* Mobile stats */}
+          {/* Mobile images */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.5 }}
             className="grid grid-cols-3 gap-3 mt-12 lg:hidden"
           >
-            {stats.map((stat) => (
+            {heroImages.map((image) => (
               <div
-                key={stat.label}
-                className="text-center p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl"
+                key={image.id}
+                className="aspect-square bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl overflow-hidden"
               >
-                <div className="text-xl font-bold text-emerald-400">{stat.value}</div>
-                <div className="text-xs text-slate-400 mt-1">{stat.label}</div>
+                <img
+                  src={image.placeholder}
+                  alt={image.alt}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none'
+                    e.currentTarget.parentElement!.classList.add('flex', 'items-center', 'justify-center')
+                    e.currentTarget.parentElement!.innerHTML = '<span class="text-slate-500 text-xs">Image</span>'
+                  }}
+                />
               </div>
             ))}
           </motion.div>
@@ -174,7 +198,7 @@ export function Hero() {
 
       {/* Scroll indicator */}
       <motion.a
-        href="#solutions"
+        href="#process"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1, duration: 0.6 }}

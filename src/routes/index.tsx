@@ -4,7 +4,6 @@ import {
   Footer,
   Header,
   Hero,
-  Markets,
   Materials,
   Partners,
   Process,
@@ -20,7 +19,6 @@ function App() {
       <main>
         <Hero />
         <Process />
-        <Markets />
         <Materials />
         <Timeline />
         <Partners />

@@ -1,21 +1,15 @@
 import { Leaf } from 'lucide-react'
 
 const footerLinks = {
-  solutions: [
+  materials: [
     { label: 'PA6 Compounds', href: '#materials' },
     { label: 'PA66 Compounds', href: '#materials' },
     { label: 'Glass-Filled PA', href: '#materials' },
     { label: 'Impact-Modified PA', href: '#materials' },
   ],
-  markets: [
-    { label: 'Automotive', href: '#markets' },
-    { label: 'Electronics', href: '#markets' },
-    { label: 'Industrial', href: '#markets' },
-    { label: 'Consumer Goods', href: '#markets' },
-  ],
   company: [
     { label: 'About Us', href: '#company' },
-    { label: 'Our Journey', href: '#company' },
+    { label: 'Our Process', href: '#process' },
     { label: 'Contact', href: '#contact' },
   ],
 }
@@ -25,7 +19,7 @@ export function Footer() {
     <footer className="bg-gray-900 text-gray-300">
       {/* Main footer */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12">
+        <div className="grid md:grid-cols-3 gap-12">
           {/* Brand column */}
           <div>
             <a href="#home" className="flex items-center gap-2 mb-6">
@@ -37,33 +31,16 @@ export function Footer() {
               </span>
             </a>
             <p className="text-gray-400 max-w-sm leading-relaxed">
-              Transforming waste into value through sustainable compounding. High-performance
-              engineering thermoplastics that don't compromise on quality.
+              Leading the way in sustainable polymer solutions. We transform industrial waste into 
+              premium engineering thermoplastics for a greener tomorrow.
             </p>
           </div>
 
-          {/* Solutions */}
+          {/* Materials */}
           <div>
-            <h4 className="text-white font-semibold mb-4">Solutions</h4>
+            <h4 className="text-white font-semibold mb-4">Materials</h4>
             <ul className="space-y-3">
-              {footerLinks.solutions.map((link) => (
-                <li key={link.label}>
-                  <a
-                    href={link.href}
-                    className="text-gray-400 hover:text-emerald-400 transition-colors"
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Markets */}
-          <div>
-            <h4 className="text-white font-semibold mb-4">Markets</h4>
-            <ul className="space-y-3">
-              {footerLinks.markets.map((link) => (
+              {footerLinks.materials.map((link) => (
                 <li key={link.label}>
                   <a
                     href={link.href}

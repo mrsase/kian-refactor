@@ -253,12 +253,19 @@ export function Contact() {
                 </motion.div>
               ))}
 
-              {/* Map placeholder */}
-              <div className="bg-gray-200 rounded-xl h-48 flex items-center justify-center mt-4">
-                <div className="text-center text-gray-500">
-                  <MapPin className="w-8 h-8 mx-auto mb-2" />
-                  <p className="text-sm">Map Integration</p>
-                </div>
+              {/* Google Maps Embed */}
+              <div className="rounded-xl overflow-hidden h-48 mt-4 border border-gray-100">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3239.9776855098893!2d51.38897841525882!3d35.69439998019244!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzXCsDQxJzM5LjgiTiA1McKwMjMnMjguNCJF!5e0!3m2!1sen!2s!4v1234567890"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="KianGreenUp Location"
+                  className="grayscale hover:grayscale-0 transition-all duration-300"
+                />
               </div>
             </motion.div>
           </div>

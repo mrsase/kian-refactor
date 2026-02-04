@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { ArrowRight, Recycle, Sparkles } from 'lucide-react'
+import { Recycle, Sparkles } from 'lucide-react'
 
 const steps = [
   {
@@ -22,7 +22,7 @@ const steps = [
 
 export function Process() {
   return (
-    <section id="solutions" className="py-20 bg-white">
+    <section id="process" className="py-20 bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto">
           {/* Section Header */}
@@ -70,11 +70,6 @@ export function Process() {
                       <step.icon className="w-8 h-8 text-white" />
                     </div>
 
-                    {/* Step number */}
-                    <span className="text-sm font-semibold text-emerald-600 tracking-wide">
-                      STEP {step.number}
-                    </span>
-
                     {/* Title */}
                     <h3 className="text-xl font-bold text-gray-900 mt-2">{step.title}</h3>
 
@@ -86,22 +81,6 @@ export function Process() {
             ))}
           </div>
 
-          {/* CTA */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            className="text-center mt-12"
-          >
-            <a
-              href="#materials"
-              className="inline-flex items-center gap-2 text-emerald-600 font-semibold hover:text-emerald-700 transition-colors group"
-            >
-              Learn more about our materials
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </a>
-          </motion.div>
         </div>
       </div>
     </section>

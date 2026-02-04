@@ -1,7 +1,6 @@
 export { Header } from './Header'
 export { Hero } from './Hero'
 export { Process } from './Process'
-export { Markets } from './Markets'
 export { Materials } from './Materials'
 export { Timeline } from './Timeline'
 export { Partners } from './Partners'
