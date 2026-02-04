@@ -1,6 +1,12 @@
-import { motion } from 'framer-motion'
-import { Clock, Mail, MapPin, Phone, Send } from 'lucide-react'
+import { AnimatePresence, motion } from 'framer-motion'
+import { AlertCircle, CheckCircle, Clock, Loader2, Mail, MapPin, Phone, Send } from 'lucide-react'
 import { useState } from 'react'
+
+interface FormState {
+  status: 'idle' | 'loading' | 'success' | 'error'
+  message: string
+  errors: Record<string, string>
+}
 
 const contactInfo = [
   {
@@ -49,18 +55,76 @@ export function Contact() {
     message: '',
   })
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [formState, setFormState] = useState<FormState>({
+    status: 'idle',
+    message: '',
+    errors: {},
+  })
+
+  const resetForm = () => {
+    setFormData({
+      name: '',
+      email: '',
+      phone: '',
+      company: '',
+      industry: '',
+      message: '',
+    })
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Backend will be implemented later
-    console.log('Form submitted:', formData)
-    alert('Thank you for your message! We will get back to you within 1-2 business days.')
+    
+    setFormState({ status: 'loading', message: '', errors: {} })
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      })
+
+      const result = await response.json()
+
+      if (result.success) {
+        setFormState({
+          status: 'success',
+          message: result.message,
+          errors: {},
+        })
+        resetForm()
+      } else {
+        setFormState({
+          status: 'error',
+          message: result.message,
+          errors: result.errors || {},
+        })
+      }
+    } catch {
+      setFormState({
+        status: 'error',
+        message: 'Network error. Please check your connection and try again.',
+        errors: {},
+      })
+    }
   }
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
+    const { name, value } = e.target
+    setFormData({ ...formData, [name]: value })
+    
+    // Clear field error when user starts typing
+    if (formState.errors[name]) {
+      setFormState((prev) => ({
+        ...prev,
+        errors: { ...prev.errors, [name]: '' },
+      }))
+    }
   }
+
+  const getFieldError = (fieldName: string) => formState.errors[fieldName]
 
   return (
     <section id="contact" className="py-20 bg-gray-50">
@@ -94,124 +158,199 @@ export function Contact() {
               <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
                 <h3 className="text-xl font-bold text-gray-900 mb-6">Send Us a Message</h3>
 
-                <form onSubmit={handleSubmit} className="space-y-5">
-                  <div className="grid sm:grid-cols-2 gap-5">
-                    {/* Name */}
-                    <div className="form-control">
-                      <label className="label">
-                        <span className="label-text font-medium text-gray-700">Name *</span>
-                      </label>
-                      <input
-                        type="text"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        placeholder="John Doe"
-                        className="input input-bordered w-full focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
-                        required
-                      />
-                    </div>
-
-                    {/* Email */}
-                    <div className="form-control">
-                      <label className="label">
-                        <span className="label-text font-medium text-gray-700">Email *</span>
-                      </label>
-                      <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        placeholder="john@company.com"
-                        className="input input-bordered w-full focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid sm:grid-cols-2 gap-5">
-                    {/* Phone */}
-                    <div className="form-control">
-                      <label className="label">
-                        <span className="label-text font-medium text-gray-700">Phone</span>
-                      </label>
-                      <input
-                        type="tel"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        placeholder="+1 (555) 000-0000"
-                        className="input input-bordered w-full focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
-                      />
-                    </div>
-
-                    {/* Company */}
-                    <div className="form-control">
-                      <label className="label">
-                        <span className="label-text font-medium text-gray-700">Company</span>
-                      </label>
-                      <input
-                        type="text"
-                        name="company"
-                        value={formData.company}
-                        onChange={handleChange}
-                        placeholder="Your Company Inc."
-                        className="input input-bordered w-full focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Industry */}
-                  <div className="form-control">
-                    <label className="label">
-                      <span className="label-text font-medium text-gray-700">Industry</span>
-                    </label>
-                    <select
-                      name="industry"
-                      value={formData.industry}
-                      onChange={handleChange}
-                      className="select select-bordered w-full focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
+                {/* Success Message */}
+                <AnimatePresence mode="wait">
+                  {formState.status === 'success' ? (
+                    <motion.div
+                      key="success"
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      className="text-center py-12"
                     >
-                      <option value="">Select an industry</option>
-                      {industries.map((industry) => (
-                        <option key={industry} value={industry}>
-                          {industry}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+                      <div className="w-16 h-16 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-4">
+                        <CheckCircle className="w-8 h-8 text-emerald-500" />
+                      </div>
+                      <h4 className="text-xl font-bold text-gray-900 mb-2">Message Sent!</h4>
+                      <p className="text-gray-600 mb-6">{formState.message}</p>
+                      <button
+                        onClick={() => setFormState({ status: 'idle', message: '', errors: {} })}
+                        className="btn btn-outline btn-sm border-emerald-500 text-emerald-600 hover:bg-emerald-50"
+                      >
+                        Send Another Message
+                      </button>
+                    </motion.div>
+                  ) : (
+                    <motion.form
+                      key="form"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      onSubmit={handleSubmit}
+                      className="space-y-5"
+                    >
+                      {/* Global Error Message */}
+                      {formState.status === 'error' && formState.message && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="alert bg-red-50 border border-red-200 text-red-700"
+                        >
+                          <AlertCircle className="w-5 h-5" />
+                          <span>{formState.message}</span>
+                        </motion.div>
+                      )}
 
-                  {/* Message */}
-                  <div className="form-control">
-                    <label className="label">
-                      <span className="label-text font-medium text-gray-700">Message *</span>
-                    </label>
-                    <textarea
-                      name="message"
-                      value={formData.message}
-                      onChange={handleChange}
-                      placeholder="Tell us about your project or inquiry..."
-                      className="textarea textarea-bordered w-full h-32 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
-                      required
-                    />
-                  </div>
+                      <div className="grid sm:grid-cols-2 gap-5">
+                        {/* Name */}
+                        <div className="form-control">
+                          <label className="label">
+                            <span className="label-text font-medium text-gray-700">Name *</span>
+                          </label>
+                          <input
+                            type="text"
+                            name="name"
+                            value={formData.name}
+                            onChange={handleChange}
+                            placeholder="John Doe"
+                            disabled={formState.status === 'loading'}
+                            className={`input input-bordered w-full focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 ${
+                              getFieldError('name') ? 'input-error border-red-500' : ''
+                            }`}
+                            required
+                          />
+                          {getFieldError('name') && (
+                            <span className="text-red-500 text-sm mt-1">{getFieldError('name')}</span>
+                          )}
+                        </div>
 
-                  {/* Submit Button */}
-                  <motion.button
-                    type="submit"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="btn bg-emerald-500 hover:bg-emerald-600 text-white border-none w-full gap-2"
-                  >
-                    <Send className="w-4 h-4" />
-                    Send Message
-                  </motion.button>
+                        {/* Email */}
+                        <div className="form-control">
+                          <label className="label">
+                            <span className="label-text font-medium text-gray-700">Email *</span>
+                          </label>
+                          <input
+                            type="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            placeholder="john@company.com"
+                            disabled={formState.status === 'loading'}
+                            className={`input input-bordered w-full focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 ${
+                              getFieldError('email') ? 'input-error border-red-500' : ''
+                            }`}
+                            required
+                          />
+                          {getFieldError('email') && (
+                            <span className="text-red-500 text-sm mt-1">{getFieldError('email')}</span>
+                          )}
+                        </div>
+                      </div>
 
-                  <p className="text-sm text-gray-500 text-center flex items-center justify-center gap-2">
-                    <Clock className="w-4 h-4" />
-                    Typical response time: 1-2 business days
-                  </p>
-                </form>
+                      <div className="grid sm:grid-cols-2 gap-5">
+                        {/* Phone */}
+                        <div className="form-control">
+                          <label className="label">
+                            <span className="label-text font-medium text-gray-700">Phone</span>
+                          </label>
+                          <input
+                            type="tel"
+                            name="phone"
+                            value={formData.phone}
+                            onChange={handleChange}
+                            placeholder="+1 (555) 000-0000"
+                            disabled={formState.status === 'loading'}
+                            className="input input-bordered w-full focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
+                          />
+                        </div>
+
+                        {/* Company */}
+                        <div className="form-control">
+                          <label className="label">
+                            <span className="label-text font-medium text-gray-700">Company</span>
+                          </label>
+                          <input
+                            type="text"
+                            name="company"
+                            value={formData.company}
+                            onChange={handleChange}
+                            placeholder="Your Company Inc."
+                            disabled={formState.status === 'loading'}
+                            className="input input-bordered w-full focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Industry */}
+                      <div className="form-control">
+                        <label className="label">
+                          <span className="label-text font-medium text-gray-700">Industry</span>
+                        </label>
+                        <select
+                          name="industry"
+                          value={formData.industry}
+                          onChange={handleChange}
+                          disabled={formState.status === 'loading'}
+                          className="select select-bordered w-full focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
+                        >
+                          <option value="">Select an industry</option>
+                          {industries.map((industry) => (
+                            <option key={industry} value={industry}>
+                              {industry}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
+                      {/* Message */}
+                      <div className="form-control">
+                        <label className="label">
+                          <span className="label-text font-medium text-gray-700">Message *</span>
+                        </label>
+                        <textarea
+                          name="message"
+                          value={formData.message}
+                          onChange={handleChange}
+                          placeholder="Tell us about your project or inquiry..."
+                          disabled={formState.status === 'loading'}
+                          className={`textarea textarea-bordered w-full h-32 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 ${
+                            getFieldError('message') ? 'textarea-error border-red-500' : ''
+                          }`}
+                          required
+                        />
+                        {getFieldError('message') && (
+                          <span className="text-red-500 text-sm mt-1">{getFieldError('message')}</span>
+                        )}
+                      </div>
+
+                      {/* Submit Button */}
+                      <motion.button
+                        type="submit"
+                        whileHover={formState.status !== 'loading' ? { scale: 1.02 } : {}}
+                        whileTap={formState.status !== 'loading' ? { scale: 0.98 } : {}}
+                        disabled={formState.status === 'loading'}
+                        className="btn bg-emerald-500 hover:bg-emerald-600 text-white border-none w-full gap-2 disabled:bg-emerald-400"
+                      >
+                        {formState.status === 'loading' ? (
+                          <>
+                            <Loader2 className="w-4 h-4 animate-spin" />
+                            Sending...
+                          </>
+                        ) : (
+                          <>
+                            <Send className="w-4 h-4" />
+                            Send Message
+                          </>
+                        )}
+                      </motion.button>
+
+                      <p className="text-sm text-gray-500 text-center flex items-center justify-center gap-2">
+                        <Clock className="w-4 h-4" />
+                        Typical response time: 1-2 business days
+                      </p>
+                    </motion.form>
+                  )}
+                </AnimatePresence>
               </div>
             </motion.div>
 
